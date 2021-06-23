@@ -1,0 +1,11 @@
+schema {
+    query: MyQuery
+}
+
+type MyQuery {
+    ingestData: IngestData
+}
+
+type IngestData {
+    ingestionStatus: String!
+}
