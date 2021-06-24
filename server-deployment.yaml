@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: server
+  name: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: server
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/graphql: "true"
+        io.kompose.service: server
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: graphql_api
+            - name: POSTGRES_PASSWORD
+              value: graphql_api
+            - name: POSTGRES_USER
+              value: graphql_api
+            - name: POSTGRES_URL
+              value: database
+            - name: API_KEY
+              value: 18d71e3df5eeec9c5073a226c11d3136
+          image: raghanag/my-project-server:latest
+          name: server
+          ports:
+            - containerPort: 8080
+          resources: {}
+      restartPolicy: Always
+status: {}

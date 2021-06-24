@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 services:
   database:
     image: "timescale/timescaledb:latest-pg12"
@@ -6,17 +6,21 @@ services:
       - "5432:5432"
     volumes:
       - "./.data/docker-data/postgres:/var/lib/postgresql/data"
+    networks:
+      - graphql
     environment:
       - POSTGRES_DB=graphql_api
       - POSTGRES_USER=graphql_api
       - POSTGRES_PASSWORD=graphql_api
   server:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: "raghanag/my-project-server:latest"
     depends_on:
       - database
     networks:
-      - default
+      - graphql
     ports:
       - "8080:8080"
+networks:
+  graphql:
+    external: false
+    name: graphql
